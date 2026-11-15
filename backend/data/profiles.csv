@@ -1,0 +1,4 @@
+id,username,name,email,password_hash,role,xp_points,created_at
+usr_superadmin,superad,System Superadmin,superad@straybuddy.local,superad,superadmin,9999,2026-11-13T00:00:00.000Z
+usr_feeder1,catlover,Sarah Jenkins,sarah@example.com,password123,feeder,120,2026-11-13T00:00:00.000Z
+usr_feeder2,dogrescuer,Mark Santos,mark@example.com,password123,spotter,80,2026-11-13T00:00:00.000Z

@@ -1,0 +1,4 @@
+id,stray_id,user_id,username,action_type,notes,created_at
+log_1,stray_1,usr_feeder1,catlover,fed,Gave fresh salmon wet food and petting,2026-11-13T08:30:00.000Z
+log_2,stray_2,usr_feeder2,dogrescuer,fed,Gave chicken kibble and dressed slight scrape on foot,2026-11-13T04:15:00.000Z
+log_3,stray_3,usr_feeder1,catlover,water,Refilled cold clean bowl near bushes,2026-11-13T09:00:00.000Z

@@ -1,0 +1,4 @@
+id,stray_id,user_id,username,rating,comment,created_at
+rev_1,stray_1,usr_feeder1,catlover,5,Super friendly and purrs instantly when you give treats!,2026-11-13T09:10:00.000Z
+rev_2,stray_1,usr_feeder2,dogrescuer,5,Always stays near the corner sari-sari store. Healthy appetite.,2026-11-13T09:20:00.000Z
+rev_3,stray_2,usr_feeder2,dogrescuer,4,Very shy but warms up with soft treats. Needs foot checkup soon.,2026-11-13T09:25:00.000Z
