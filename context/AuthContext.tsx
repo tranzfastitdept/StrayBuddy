@@ -42,7 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('straybuddy_user');
   };
 
-  const isSuperAdmin = user?.username === 'superad' || user?.role === 'superadmin';
+  // Admin tools are decided by the role only — never by a username.
+  const isSuperAdmin = user?.role === 'admin' || user?.role === 'superadmin';
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isSuperAdmin }}>

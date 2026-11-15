@@ -58,12 +58,12 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
 
   const fillSuperAdmin = () => {
     setMode('login');
-    setUsername('superad');
-    setPassword('superad');
+    setUsername('');
+    setPassword('');
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in select-none">
+    <div className="fixed inset-0 z-[970] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in select-none">
       <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-6 text-slate-100 relative">
         
         {/* Close Button */}
@@ -87,17 +87,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
           </p>
         </div>
 
-        {/* Superadmin quick fill banner */}
-        <div className="mb-4 p-2 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center justify-between text-[11px] text-slate-300">
-          <span>Superadmin Demo: <b>superad</b></span>
-          <button
-            type="button"
-            onClick={fillSuperAdmin}
-            className="px-2 py-0.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 font-bold rounded-lg border border-emerald-500/30"
-          >
-            Auto-Fill
-          </button>
-        </div>
+        {/* Superadmin credentials are never shown to regular users. */}
 
         {/* Error notification */}
         {errorMsg && (

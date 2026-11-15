@@ -1,0 +1,7 @@
+key,value,updated_at
+app_name,StrayBuddy,2026-11-13T00:00:00.000Z
+fed_cooldown_minutes,300,2026-11-13T00:00:00.000Z
+radius_km,15,2026-11-13T00:00:00.000Z
+require_signin_feed,1,2026-11-13T00:00:00.000Z
+require_signin_water,1,2026-11-13T00:00:00.000Z
+max_photos_per_animal,4,2026-11-13T00:00:00.000Z

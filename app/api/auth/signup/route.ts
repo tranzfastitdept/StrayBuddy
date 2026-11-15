@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       name: name.trim(),
       email: trimmedEmail,
       password_hash: password, // For MVP demo; in prod use bcrypt/argon2
-      role: trimmedUsername === 'superad' ? 'superadmin' : 'spotter',
+      role: 'spotter', // self sign-up never grants admin rights
     });
 
     const { password_hash, ...safeProfile } = newUser;

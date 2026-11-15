@@ -21,6 +21,35 @@ function getFilePath(table) {
   return path.join(DATA_DIR, `${table}.csv`);
 }
 
+/** Animals live in three files; the API hands them back as one list. */
+const ANIMAL_TABLES = ['cats', 'dogs', 'others'];
+const ANIMAL_COLUMNS = [
+  'id', 'created_by', 'name', 'species', 'coat_description', 'health_status', 'is_tnr', 'city',
+  'exact_lat', 'exact_lng', 'public_lat', 'public_lng', 'photo_ids', 'identifier_photo_url',
+  'gallery_photos', 'fed_count', 'last_fed_at', 'last_seen_at', 'created_at', 'status',
+];
+
+function readAnimals() {
+  return ANIMAL_TABLES.flatMap((table) => readCSV(table))
+    .filter((row) => (row.status || 'active') === 'active')
+    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+}
+
+/** Which animal file a row belongs in. */
+function animalTable(species) {
+  if (species === 'dog') return 'dogs';
+  if (species === 'cat') return 'cats';
+  return 'others';
+}
+
+function writeAnimals(rows) {
+  ANIMAL_TABLES.forEach((table) => {
+    const mine = rows.filter((row) => (row.species || (table === 'cats' ? 'cat' : table === 'dogs' ? 'dog' : 'other')) ===
+      (table === 'cats' ? 'cat' : table === 'dogs' ? 'dog' : 'other'));
+    if (mine.length) writeCSV(table, mine);
+  });
+}
+
 function parseCSVLine(line) {
   const result = [];
   let current = '';
@@ -92,7 +121,7 @@ function readCSV(table) {
 function writeCSV(table, rows) {
   const filePath = getFilePath(table);
   if (rows.length === 0) return;
-  const headers = Object.keys(rows[0]);
+  const headers = table === 'strays' || ANIMAL_TABLES.includes(table) ? ANIMAL_COLUMNS : Object.keys(rows[0]);
   const lines = [headers.join(',')];
   for (const r of rows) {
     lines.push(formatCSVLine(headers.map((h) => r[h])));
@@ -128,9 +157,14 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
-  const users = readCSV('profiles');
+  const users = readCSV('users');
   const user = users.find((u) => u.username?.toLowerCase() === username.trim().toLowerCase());
   if (!user || user.password_hash !== password) {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
+
+  if (String(user.role || '') === 'superadmin') {
+    // Superadmin credentials are only accepted at the admin sign-in endpoint.
     return res.status(401).json({ error: 'Invalid username or password' });
   }
 
@@ -145,7 +179,7 @@ app.post('/api/auth/signup', (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const users = readCSV('profiles');
+  const users = readCSV('users');
   const trimmed = username.trim().toLowerCase();
   if (users.some((u) => u.username?.toLowerCase() === trimmed)) {
     return res.status(400).json({ error: 'Username already taken' });
@@ -160,19 +194,35 @@ app.post('/api/auth/signup', (req, res) => {
     name: name.trim(),
     email: email.trim().toLowerCase(),
     password_hash: password,
-    role: trimmed === 'superad' ? 'superadmin' : 'spotter',
+    // Self sign-up never grants admin rights.
+    role: 'spotter',
     xp_points: 10,
     created_at: new Date().toISOString(),
   };
 
-  appendCSV('profiles', newUser);
+  appendCSV('users', newUser);
   const { password_hash, ...safeUser } = newUser;
   res.json({ success: true, user: safeUser });
 });
 
 // 4. Strays: Get and Create
+// Only strays inside the 15 km window around the device are returned.
 app.get('/api/strays', (req, res) => {
-  const strays = readCSV('strays');
+  const strays = readAnimals();
+  const lat = Number(req.query.lat);
+  const lng = Number(req.query.lng);
+  const radius = Number(req.query.radius);
+
+  if (Number.isFinite(lat) && Number.isFinite(lng) && Number.isFinite(radius) && radius > 0) {
+    const inside = strays.filter((s) => {
+      const sLat = Number(s.public_lat);
+      const sLng = Number(s.public_lng);
+      if (!Number.isFinite(sLat) || !Number.isFinite(sLng)) return false;
+      return Math.abs(sLat - lat) <= radius && Math.abs(sLng - lng) <= radius;
+    });
+    return res.json(inside);
+  }
+
   res.json(strays);
 });
 
@@ -217,23 +267,70 @@ app.post('/api/strays', (req, res) => {
     public_lat,
     public_lng,
     identifier_photo_url,
-    gallery_photos: Array.isArray(gallery_photos) ? gallery_photos.slice(0, 3) : [],
+    gallery_photos,
+    photo_ids,
     fed_count: 0,
-    last_fed_at: null,
+    last_fed_at: '',
     last_seen_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
     created_by: created_by || null,
+    status: 'active',
   };
 
-  appendCSV('strays', newStray);
+  appendCSV(animalTable(newStray.species), newStray);
   res.status(201).json(newStray);
 });
 
 // 5. Care Logs & "FED" Reaction
+// A community fed tap is one per guardian per buddy every 5 hours.
+const FED_COOLDOWN_MINUTES = 300;
+
 app.post('/api/care', (req, res) => {
   const { stray_id, user_id, username, action_type, notes } = req.body;
   if (!stray_id || !action_type) {
     return res.status(400).json({ error: 'stray_id and action_type required' });
+  }
+
+  const guardianKey = user_id ? String(user_id) : null;
+
+  // Feeding and watering are signed-in actions only. The fed counter and the
+  // water check are what rescuers trust, and an anonymous tap cannot be
+  // slowed down, so the real condition of a stray would drift away.
+  if ((action_type === 'fed' || action_type === 'water') && !guardianKey) {
+    return res.status(401).json({
+      error: 'signin-required',
+      needsSignIn: true,
+      message:
+        action_type === 'fed'
+          ? 'Sign in first so the community fed count stays honest.'
+          : 'Sign in first so the water refills can be trusted.',
+    });
+  }
+
+  if (action_type === 'fed' && guardianKey) {
+    const logs = readCSV('care_logs');
+    const cutoff = Date.now() - FED_COOLDOWN_MINUTES * 60 * 1000;
+    const lastTap = logs
+      .filter(
+        (l) =>
+          l.stray_id === stray_id &&
+          l.action_type === 'fed' &&
+          (l.user_id === guardianKey ||
+            String(l.username || '').toLowerCase() === guardianKey.replace(/^guest:/, '')) &&
+          new Date(l.created_at).getTime() >= cutoff
+      )
+      .pop();
+
+    if (lastTap) {
+      const waitMs = new Date(lastTap.created_at).getTime() + FED_COOLDOWN_MINUTES * 60 * 1000 - Date.now();
+      const minutesLeft = Math.max(1, Math.ceil(waitMs / 60000));
+      return res.status(429).json({
+        error: 'cooldown',
+        cooldown: true,
+        minutesLeft,
+        message: `You tapped this buddy today. Come back in ${Math.floor(minutesLeft / 60)}h ${minutesLeft % 60}m.`,
+      });
+    }
   }
 
   const now = new Date().toISOString();
@@ -248,15 +345,49 @@ app.post('/api/care', (req, res) => {
   });
 
   if (action_type === 'fed') {
-    const strays = readCSV('strays');
+    const strays = readAnimals();
     const idx = strays.findIndex((s) => s.id === stray_id);
     if (idx !== -1) {
       strays[idx].fed_count = (Number(strays[idx].fed_count) || 0) + 1;
       strays[idx].last_fed_at = now;
       strays[idx].last_seen_at = now;
-      writeCSV('strays', strays);
+      writeAnimals(strays);
       return res.json({ success: true, stray: strays[idx], message: 'Fed reaction recorded!' });
     }
+  }
+
+  if (action_type === 'water' || action_type === 'sighting' || action_type === 'medical_alert') {
+    const strays = readAnimals();
+    const idx = strays.findIndex((s) => s.id === stray_id);
+    if (idx === -1) return res.status(404).json({ error: 'Stray not found' });
+
+    strays[idx].last_seen_at = now;
+    if (action_type === 'medical_alert') strays[idx].health_status = 'injured';
+    writeAnimals(strays);
+
+    if (action_type === 'medical_alert') {
+      appendCSV('notifications', {
+        id: `ntf_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+        user_id: null,
+        stray_id,
+        kind: 'urgent',
+        title: `Urgent case: ${username || 'A guardian'} flagged a stray`,
+        body: notes || 'Needs a rescuer as soon as possible.',
+        is_read: 0,
+        created_at: now,
+      });
+    }
+
+    return res.json({
+      success: true,
+      stray: strays[idx],
+      message:
+        action_type === 'water'
+          ? 'Fresh water logged!'
+          : action_type === 'medical_alert'
+          ? 'Urgent report sent to rescuers!'
+          : 'Sighting refreshed!',
+    });
   }
 
   res.json({ success: true });
@@ -356,8 +487,8 @@ app.post('/api/campaigns', (req, res) => {
 
 // 8. Admin Multi-City Shard Aggregation
 app.get('/api/admin/aggregate', (req, res) => {
-  const strays = readCSV('strays');
-  const profiles = readCSV('profiles');
+  const strays = readAnimals();
+  const profiles = readCSV('users');
   const careLogs = readCSV('care_logs');
 
   const CITIES = [

@@ -1,0 +1,32 @@
+{
+  "name": "StrayBuddy — Pet Radar Network",
+  "short_name": "StrayBuddy",
+  "description": "Live stray animal radar, feeding loops and community care campaigns.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "categories": ["lifestyle", "utilities", "social"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Map", "url": "/", "description": "See strays near you" },
+    { "name": "Strays", "url": "/strays", "description": "Every buddy on record" },
+    { "name": "Campaigns", "url": "/campaigns", "description": "Charity campaigns" },
+    { "name": "Admin", "url": "/admin", "description": "City telemetry" }
+  ]
+}

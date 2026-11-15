@@ -1,0 +1,9 @@
+id,name,region,center_lat,center_lng,is_active
+city_manila,Manila,Metro Manila,14.5995,120.9842,1
+city_makati,Makati,Metro Manila,14.5547,121.0244,1
+city_pasay,Pasay,Metro Manila,14.5378,120.9955,1
+city_cavite,Cavite,CALABARZON,14.3275,120.9363,1
+city_dasmarias,Dasmarinas,Cavite,14.3294,120.9362,1
+city_bacoor,Bacoor,Cavite,14.4596,120.9590,1
+city_imus,Imus,Cavite,14.4297,120.9367,1
+city_tagaytay,Tagaytay,Cavite,14.1154,120.9621,1

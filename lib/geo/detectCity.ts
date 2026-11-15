@@ -12,10 +12,17 @@ export function detectCity(lat: number, lng: number): string {
     Taguig: { minLat: 14.48, maxLat: 14.58, minLng: 121.03, maxLng: 121.10 },
     Pasig: { minLat: 14.55, maxLat: 14.65, minLng: 121.06, maxLng: 121.15 },
     Mandaluyong: { minLat: 14.56, maxLat: 14.60, minLng: 121.03, maxLng: 121.06 },
-    Pasay: { minLat: 14.50, maxLat: 14.55, minLng: 120.96, maxLng: 121.00 },
+    Pasay: { minLat: 14.50, maxLat: 14.56, minLng: 120.96, maxLng: 121.02 },
     "Parañaque": { minLat: 14.46, maxLat: 14.53, minLng: 120.97, maxLng: 121.03 },
     Caloocan: { minLat: 14.65, maxLat: 14.73, minLng: 120.97, maxLng: 121.09 },
     "Las Piñas": { minLat: 14.40, maxLat: 14.48, minLng: 120.98, maxLng: 121.03 },
+    // Cavite coverage area
+    Bacoor: { minLat: 14.44, maxLat: 14.49, minLng: 120.92, maxLng: 120.98 },
+    Imus: { minLat: 14.39, maxLat: 14.45, minLng: 120.90, maxLng: 120.97 },
+    "Dasmariñas": { minLat: 14.28, maxLat: 14.35, minLng: 120.90, maxLng: 120.99 },
+    "General Trias": { minLat: 14.34, maxLat: 14.42, minLng: 120.84, maxLng: 120.92 },
+    "Cavite City": { minLat: 14.45, maxLat: 14.51, minLng: 120.86, maxLng: 120.93 },
+    Tagaytay: { minLat: 14.08, maxLat: 14.16, minLng: 120.90, maxLng: 120.98 },
   };
 
   for (const [city, b] of Object.entries(boxes)) {

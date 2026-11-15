@@ -73,7 +73,7 @@ export default function CampaignPopupModal({ onClose, onOpenAnnouncements, onOpe
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in select-none">
+    <div className="fixed inset-0 z-[970] flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in select-none">
       <div className="w-full max-w-sm bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-500/40 rounded-3xl shadow-2xl overflow-hidden relative text-slate-100 animate-slide-up">
         
         {/* Shopee-style Orange/Amber Flash Ribbon */}

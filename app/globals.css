@@ -2,12 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Safe area padding for mobile WebViews / notch phones */
+/* =============================================================================
+   StrayBuddy design tokens — one place for every colour, radius and shadow.
+   Components reference var(--sb-*) instead of hardcoding hex values.
+   ============================================================================= */
 :root {
+  /* Safe area padding for mobile WebViews / notch phones */
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
   --sal: env(safe-area-inset-left, 0px);
   --sar: env(safe-area-inset-right, 0px);
+
+  /* Surfaces */
+  --sb-bg: #101827;
+  --sb-surface: #1b2638;
+  --sb-surface-2: #253449;
+  --sb-line: rgb(148 163 184 / 0.16);
+  --sb-line-strong: rgb(148 163 184 / 0.3);
+
+  /* Text */
+  --sb-text: #f8fafc;
+  --sb-text-muted: #94a3b8;
+
+  /* Accents */
+  --sb-accent: #10b981;
+  --sb-accent-2: #06b6d4;
+  --sb-danger: #ef4444;
+  --sb-warning: #f59e0b;
+  --sb-success: #22c55e;
+
+  /* Shape + depth */
+  --sb-radius: 18px;
+  --sb-radius-sm: 12px;
+  --sb-shadow: 0 12px 32px -14px rgb(2 6 23 / 0.8);
+  --sb-shadow-lg: 0 24px 48px -20px rgb(2 6 23 / 0.9);
+  --sb-blur: 18px;
 }
 
 html, body {
@@ -22,27 +51,102 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Life360 / Radar style pulse animations */
+html {
+  background: var(--sb-bg);
+}
+
+/* =============================================================================
+   Shared surfaces
+   ============================================================================= */
+@layer components {
+  /* Floating glass panel used by every map overlay */
+  .sb-glass {
+    background: var(--sb-surface);
+    background: color-mix(in srgb, var(--sb-surface) 82%, transparent);
+    border: 1px solid var(--sb-line);
+    border-radius: var(--sb-radius);
+    box-shadow: var(--sb-shadow);
+    backdrop-filter: blur(var(--sb-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--sb-blur)) saturate(140%);
+  }
+
+  /* Round floating map button — 48px touch target */
+  .sb-map-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    width: 48px;
+    border-radius: 16px;
+    color: var(--sb-text);
+    background: var(--sb-surface);
+    background: color-mix(in srgb, var(--sb-surface) 86%, transparent);
+    border: 1px solid var(--sb-line);
+    box-shadow: var(--sb-shadow);
+    backdrop-filter: blur(var(--sb-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--sb-blur)) saturate(140%);
+    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .sb-map-btn:hover {
+    background: var(--sb-surface-2);
+    border-color: var(--sb-line-strong);
+  }
+
+  .sb-map-btn:active {
+    transform: scale(0.94);
+  }
+
+  /* Small uppercase label used above numbers and inside panels */
+  .sb-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sb-text-muted);
+  }
+
+  /* Primary pill action */
+  .sb-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 9999px;
+    background: linear-gradient(100deg, var(--sb-accent), var(--sb-accent-2));
+    color: #052e26;
+    font-weight: 800;
+    box-shadow: 0 14px 34px -16px rgb(16 185 129 / 0.7);
+    transition: transform 160ms ease, filter 160ms ease;
+  }
+
+  .sb-primary:hover { filter: brightness(1.07); }
+  .sb-primary:active { transform: scale(0.97); }
+}
+
+/* =============================================================================
+   Animation
+   ============================================================================= */
 @keyframes radar-ping {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.9;
-  }
-  70% {
-    transform: scale(2.2);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
+  0% { transform: scale(0.95); opacity: 0.9; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
 }
 
 .animate-radar-ping {
   animation: radar-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Smooth float animation for badges */
+/* Calm single pulse for urgent-only markers (no constant flashing) */
+@keyframes soft-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(239 68 68 / 0.45); }
+  50% { box-shadow: 0 0 0 7px rgb(239 68 68 / 0); }
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
 @keyframes subtle-float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-3px); }
@@ -52,60 +156,15 @@ html, body {
   animation: subtle-float 3s ease-in-out infinite;
 }
 
-/* Leaflet container styling */
-.leaflet-container {
-  width: 100%;
-  height: 100%;
-  background: #f1f5f9 !important; /* Clean neutral OSM background */
-  font-family: inherit;
-  z-index: 1;
-}
-
-/* Hide or restyle default leaflet controls */
-.leaflet-control-zoom {
-  border: none !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
-  border-radius: 16px !important;
-  overflow: hidden;
-}
-
-.leaflet-control-attribution {
-  font-size: 9px !important;
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(4px) !important;
-  border-radius: 6px 0 0 0 !important;
-  padding: 2px 6px !important;
-  color: #64748b !important;
-}
-
-.leaflet-control-attribution a {
-  color: #0284c7 !important;
-  text-decoration: none;
-}
-
-/* Custom DivIcon reset */
-.leaflet-div-icon {
-  background: transparent !important;
-  border: none !important;
-}
-
-/* Bottom sheet slide animation */
 @keyframes slide-up {
-  from {
-    transform: translateY(100%);
-    opacity: 0.8;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(100%); opacity: 0.8; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .animate-slide-up {
-  animation: slide-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Smooth fade in */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -115,7 +174,114 @@ html, body {
   animation: fade-in 0.2s ease-out forwards;
 }
 
-/* Custom glassy scrollbars */
+/* Popover / panel: fade plus a small scale so it feels anchored */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Gentle rise used when a page or card first appears */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-rise {
+  animation: rise-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes wag {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.animate-wag {
+  animation: wag 2.6s ease-in-out infinite;
+}
+
+/* Respect users who turn off motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-radar-ping,
+  .animate-soft-pulse,
+  .animate-float,
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-pop-in,
+  .animate-rise,
+  .animate-wag {
+    animation: none !important;
+  }
+  .sb-map-btn,
+  .sb-primary {
+    transition: none !important;
+  }
+}
+
+/* =============================================================================
+   Leaflet
+   ============================================================================= */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #e8eef3 !important;
+  font-family: inherit;
+  z-index: 1;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--sb-shadow) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-attribution {
+  font-size: 9px !important;
+  background: rgb(255 255 255 / 0.75) !important;
+  backdrop-filter: blur(4px) !important;
+  border-radius: 8px 0 0 0 !important;
+  padding: 2px 6px !important;
+  color: #64748b !important;
+}
+
+.leaflet-control-attribution a {
+  color: #0e7490 !important;
+  text-decoration: none;
+}
+
+/* Custom DivIcon reset */
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.stray-custom-marker,
+.me-custom-marker {
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+/* Clip pauses are handled per-marker with z-index, not CSS */
+
+/* =============================================================================
+   Interaction polish
+   ============================================================================= */
+button:not(:disabled),
+[role="button"] {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--sb-accent);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -124,9 +290,9 @@ html, body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
+  background: rgb(148 163 184 / 0.3);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgb(148 163 184 / 0.5);
 }

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="StrayBuddy logo">
+  <!-- StrayBuddy app icon: one round face, cat on the left, dog on the right. -->
+  <defs>
+    <linearGradient id="sbCat" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#0d9488" />
+    </linearGradient>
+    <linearGradient id="sbDog" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+    <radialGradient id="sbGlow" cx="50%" cy="18%" r="72%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0b1220" />
+    </radialGradient>
+  </defs>
+
+  <!-- Backdrop -->
+  <rect width="512" height="512" rx="112" fill="url(#sbGlow)" />
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#0f172a" stroke-width="16" opacity="0.6" />
+
+  <!-- Cat ear (left) -->
+  <path d="M150 196 L140 108 L214 152 Z" fill="url(#sbCat)" stroke="#08111f" stroke-width="14" stroke-linejoin="round" />
+  <!-- Dog ear (right) -->
+  <path d="M366 176 c30 10 26 74 2 98 -20 20 -48 8 -50 -22 -4 -30 16 -84 48 -76 Z"
+        fill="#c2410c" stroke="#08111f" stroke-width="14" stroke-linejoin="round" />
+
+  <!-- The single shared face -->
+  <circle cx="256" cy="256" r="150" fill="#0f1b2d" stroke="#08111f" stroke-width="14" />
+  <path d="M256 106 A150 150 0 0 0 256 406 Z" fill="url(#sbCat)" opacity="0.92" />
+  <path d="M256 106 A150 150 0 0 1 256 406 Z" fill="url(#sbDog)" opacity="0.92" />
+  <path d="M256 106 V406" stroke="#08111f" stroke-width="10" opacity="0.45" />
+
+  <!-- Eyes: a calm cat eye on the left, a rounder dog eye on the right -->
+  <ellipse cx="204" cy="242" rx="15" ry="23" fill="#08111f" />
+  <circle cx="308" cy="244" r="18" fill="#08111f" />
+
+  <!-- Muzzle: small cat nose left, dog snout right -->
+  <path d="M256 272 l13 12 -26 0 Z" fill="#08111f" />
+  <path d="M256 292 v16 M256 304 l-26 12 M256 304 l26 12"
+        stroke="#08111f" stroke-width="9" stroke-linecap="round" opacity="0.75" />
+  <ellipse cx="316" cy="300" rx="30" ry="22" fill="#fed7aa" opacity="0.85" />
+  <ellipse cx="316" cy="288" rx="14" ry="10" fill="#08111f" />
+
+  <!-- Whiskers -->
+  <path d="M186 300 l-46 10 M186 316 l-44 20" stroke="#0b1220" stroke-width="7" stroke-linecap="round" opacity="0.5" />
+</svg>

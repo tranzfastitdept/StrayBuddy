@@ -1,4 +1,31 @@
 id,stray_id,user_id,username,action_type,notes,created_at
 log_1,stray_1,usr_feeder1,catlover,fed,Gave fresh salmon wet food and petting,2026-11-13T08:30:00.000Z
-log_2,stray_2,usr_feeder2,dogrescuer,fed,Gave chicken kibble and dressed slight scrape on foot,2026-11-13T04:15:00.000Z
+log_2,stray_2,usr_feeder2,dogrescuer,fed,Gave chicken kibble and dressed a slight scrape on the foot,2026-11-13T04:15:00.000Z
 log_3,stray_3,usr_feeder1,catlover,water,Refilled cold clean bowl near bushes,2026-11-13T09:00:00.000Z
+log_4,stray_1,usr_manila1,tondotails,sighting,Mochi sunbathing on the Quiapo church steps,2026-11-12T16:40:00.000Z
+log_5,stray_2,usr_manila1,tondotails,medical_alert,Limp is worse today and needs a vet check,2026-11-13T06:00:00.000Z
+log_6,stray_4,usr_manila1,tondotails,fed,Rice mixed with soft dog food,2026-11-13T02:00:00.000Z
+log_7,stray_manila_5,usr_manila1,tondotails,sighting,Napping on the fruit crates again,2026-11-13T07:10:00.000Z
+log_8,stray_pasay_1,usr_pasay1,pasaypaws,fed,Two cans of tuna by the LRT kiosk,2026-11-13T10:20:00.000Z
+log_9,stray_pasay_1,usr_pasay1,pasaypaws,water,Topped up the kiosk water bowl,2026-11-12T18:30:00.000Z
+log_10,stray_pasay_2,usr_pasay1,pasaypaws,fed,Cafe crew fed him leftover grilled chicken,2026-11-13T06:40:00.000Z
+log_11,stray_pasay_3,usr_feeder2,dogrescuer,medical_alert,Tiny pup with a cut on the ear under a tricycle,2026-11-13T05:00:00.000Z
+log_12,stray_pasay_4,usr_pasay1,pasaypaws,fed,Sardines by the market stalls,2026-11-13T08:05:00.000Z
+log_13,stray_pasay_5,usr_feeder2,dogrescuer,fed,Dry kibble, ate very fast,2026-11-13T03:30:00.000Z
+log_14,stray_makati_1,usr_makati1,makati_meow,fed,Tuna pouch and a fresh blanket,2026-11-13T11:00:00.000Z
+log_15,stray_makati_1,usr_makati1,makati_meow,sighting,Walking the mural alley at dusk,2026-11-12T19:00:00.000Z
+log_16,stray_makati_2,usr_makati1,makati_meow,fed,Kibble and beef broth in the parking lot,2026-11-13T07:45:00.000Z
+log_17,stray_makati_3,usr_makati1,makati_meow,sighting,Nursing kittens behind the Poblacion bar,2026-11-13T09:15:00.000Z
+log_18,stray_makati_4,usr_feeder2,dogrescuer,fed,Cooked rice with chicken liver,2026-11-13T06:00:00.000Z
+log_19,stray_makati_5,usr_makati1,makati_meow,medical_alert,Kitten with a swollen eye on the fire escape,2026-11-13T05:40:00.000Z
+log_20,stray_cavite_1,usr_cavite1,cavitepack,fed,Rice and kibble along the tricycle route,2026-11-13T07:20:00.000Z
+log_21,stray_cavite_2,usr_cavite2,bacoorbuddy,fed,Sardines outside the wet market,2026-11-13T08:45:00.000Z
+log_22,stray_cavite_3,usr_cavite1,cavitepack,water,Washed and refilled the Imus bowl,2026-11-13T06:10:00.000Z
+log_23,stray_cavite_4,usr_cavite2,bacoorbuddy,medical_alert,Pup keeps scratching a wound on its side,2026-11-13T04:50:00.000Z
+log_24,stray_cavite_5,usr_cavite1,cavitepack,sighting,Trixie moved her kittens behind the barangay hall,2026-11-13T09:40:00.000Z
+log_25,stray_cavite_6,usr_cavite2,bacoorbuddy,fed,Grilled chicken scraps by the view deck,2026-11-13T12:00:00.000Z
+log_26,stray_cavite_7,usr_cavite1,cavitepack,fed,Fish scraps from the boats,2026-11-13T05:15:00.000Z
+log_1794729110632_zj6ivo,stray_cavite_4,usr_1794719850953_iumw8z,caterr,water,Refilled clean water bowl,2026-11-15T07:51:50.632Z
+log_1794729116285_9s4rl1,stray_cavite_4,usr_1794719850953_iumw8z,caterr,water,Refilled clean water bowl,2026-11-15T07:51:56.285Z
+log_1794729118951_l3421u,stray_cavite_4,usr_1794719850953_iumw8z,caterr,water,Refilled clean water bowl,2026-11-15T07:51:58.951Z
+log_1794729319207_z5mzij,stray_cavite_4,usr_1794729311664_p5lrz0,caterr,fed,Fed with food & loving care,2026-11-15T07:55:19.207Z

@@ -149,7 +149,7 @@ export default function TagStrayModal({ onClose, onSuccess, userCoords, onOpenAu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4 animate-fade-in select-none">
+    <div className="fixed inset-0 z-[970] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4 animate-fade-in select-none">
       <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-t-[32px] sm:rounded-3xl shadow-2xl p-5 sm:p-6 text-slate-100 max-h-[92vh] overflow-y-auto pb-[calc(2.5rem+env(safe-area-inset-bottom))]">
         
         {/* Modal Header */}

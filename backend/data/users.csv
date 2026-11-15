@@ -1,0 +1,10 @@
+id,username,name,email,password_hash,role,xp_points,is_active,created_at
+usr_superadmin,superadmin,System Superadmin,superadmin@straybuddy.local,superadmin123,superadmin,9999,1,2026-11-13T00:00:00.000Z
+usr_feeder1,catlover,Sarah Jenkins,sarah@example.com,password123,feeder,120,1,2026-11-13T00:00:00.000Z
+usr_feeder2,dogrescuer,Mark Santos,mark@example.com,password123,spotter,80,1,2026-11-13T00:00:00.000Z
+usr_manila1,tondotails,Kevin Ocampo,kevin@example.com,password123,spotter,95,1,2026-11-13T00:00:00.000Z
+usr_pasay1,pasaypaws,Jomar Dela Cruz,jomar@example.com,password123,feeder,260,1,2026-11-13T00:00:00.000Z
+usr_makati1,makati_meow,Alyssa Reyes,alyssa@example.com,password123,verified_rescuer,410,1,2026-11-13T00:00:00.000Z
+usr_cavite1,cavitepack,Rico Villanueva,rico@example.com,password123,verified_rescuer,530,1,2026-11-13T00:00:00.000Z
+usr_cavite2,bacoorbuddy,Nina Mercado,nina@example.com,password123,feeder,190,1,2026-11-13T00:00:00.000Z
+usr_1794729311664_p5lrz0,caterr,testtt,test@test.test,test123,spotter,10,1,2026-11-15T07:55:11.664Z
